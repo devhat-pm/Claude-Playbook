@@ -1,0 +1,158 @@
+{
+ "data": [
+  {
+   "starting_at": "2026-10-12T00:00:00Z",
+   "ending_at": "2026-10-13T00:00:00Z",
+   "results": [
+    {
+     "amount": "4210.50",
+     "currency": "USD",
+     "cost_type": "tokens",
+     "description": "Claude Sonnet 5.5 Usage - Input Tokens",
+     "model": "claude-sonnet-5-5",
+     "workspace_id": null,
+     "token_type": "uncached_input_tokens",
+     "service_tier": "standard",
+     "context_window": "0-200k",
+     "inference_geo": "global",
+     "speed": "standard"
+    }
+   ]
+  },
+  {
+   "starting_at": "2026-10-13T00:00:00Z",
+   "ending_at": "2026-10-14T00:00:00Z",
+   "results": [
+    {
+     "amount": "4210.50",
+     "currency": "USD",
+     "cost_type": "tokens",
+     "description": "Claude Sonnet 5.5 Usage - Input Tokens",
+     "model": "claude-sonnet-5-5",
+     "workspace_id": null,
+     "token_type": "uncached_input_tokens",
+     "service_tier": "standard",
+     "context_window": "0-200k",
+     "inference_geo": "global",
+     "speed": "standard"
+    }
+   ]
+  },
+  {
+   "starting_at": "2026-10-14T00:00:00Z",
+   "ending_at": "2026-10-15T00:00:00Z",
+   "results": [
+    {
+     "amount": "4210.50",
+     "currency": "USD",
+     "cost_type": "tokens",
+     "description": "Claude Sonnet 5.5 Usage - Input Tokens",
+     "model": "claude-sonnet-5-5",
+     "workspace_id": null,
+     "token_type": "uncached_input_tokens",
+     "service_tier": "standard",
+     "context_window": "0-200k",
+     "inference_geo": "global",
+     "speed": "standard"
+    }
+   ]
+  },
+  {
+   "starting_at": "2026-10-15T00:00:00Z",
+   "ending_at": "2026-10-16T00:00:00Z",
+   "results": [
+    {
+     "amount": "4210.50",
+     "currency": "USD",
+     "cost_type": "tokens",
+     "description": "Claude Sonnet 5.5 Usage - Input Tokens",
+     "model": "claude-sonnet-5-5",
+     "workspace_id": null,
+     "token_type": "uncached_input_tokens",
+     "service_tier": "standard",
+     "context_window": "0-200k",
+     "inference_geo": "global",
+     "speed": "standard"
+    }
+   ]
+  },
+  {
+   "starting_at": "2026-10-16T00:00:00Z",
+   "ending_at": "2026-10-17T00:00:00Z",
+   "results": [
+    {
+     "amount": "4210.50",
+     "currency": "USD",
+     "cost_type": "tokens",
+     "description": "Claude Sonnet 5.5 Usage - Input Tokens",
+     "model": "claude-sonnet-5-5",
+     "workspace_id": null,
+     "token_type": "uncached_input_tokens",
+     "service_tier": "standard",
+     "context_window": "0-200k",
+     "inference_geo": "global",
+     "speed": "standard"
+    }
+   ]
+  },
+  {
+   "starting_at": "2026-10-17T00:00:00Z",
+   "ending_at": "2026-10-18T00:00:00Z",
+   "results": [
+    {
+     "amount": "4210.50",
+     "currency": "USD",
+     "cost_type": "tokens",
+     "description": "Claude Sonnet 5.5 Usage - Input Tokens",
+     "model": "claude-sonnet-5-5",
+     "workspace_id": null,
+     "token_type": "uncached_input_tokens",
+     "service_tier": "standard",
+     "context_window": "0-200k",
+     "inference_geo": "global",
+     "speed": "standard"
+    }
+   ]
+  },
+  {
+   "starting_at": "2026-10-18T00:00:00Z",
+   "ending_at": "2026-10-19T00:00:00Z",
+   "results": [
+    {
+     "amount": "4210.50",
+     "currency": "USD",
+     "cost_type": "tokens",
+     "description": "Claude Sonnet 5.5 Usage - Input Tokens",
+     "model": "claude-sonnet-5-5",
+     "workspace_id": null,
+     "token_type": "uncached_input_tokens",
+     "service_tier": "standard",
+     "context_window": "0-200k",
+     "inference_geo": "global",
+     "speed": "standard"
+    }
+   ]
+  },
+  {
+   "starting_at": "2026-10-19T00:00:00Z",
+   "ending_at": "2026-10-20T00:00:00Z",
+   "results": [
+    {
+     "amount": "21877.25",
+     "currency": "USD",
+     "cost_type": "tokens",
+     "description": "Claude Sonnet 5.5 Usage - Input Tokens",
+     "model": "claude-sonnet-5-5",
+     "workspace_id": null,
+     "token_type": "uncached_input_tokens",
+     "service_tier": "standard",
+     "context_window": "0-200k",
+     "inference_geo": "global",
+     "speed": "standard"
+    }
+   ]
+  }
+ ],
+ "has_more": false,
+ "next_page": null
+}

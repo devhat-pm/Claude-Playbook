@@ -1,0 +1,3 @@
+anthropic
+opentelemetry-sdk
+opentelemetry-exporter-otlp-proto-http

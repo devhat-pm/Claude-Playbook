@@ -1,0 +1,48 @@
+# Minimal local OpenTelemetry Collector for testing Claude Code / Agent SDK / SDK telemetry.
+#   docker run --rm -p 4317:4317 -p 4318:4318 \
+#     -v "$PWD/otel-collector.yaml:/etc/otelcol-contrib/config.yaml" \
+#     otel/opentelemetry-collector-contrib:0.111.0   (tag unverified; pin a current release)
+# Everything received is printed to the collector's stdout (debug exporter) and
+# appended as JSON to /tmp/otel/*.jsonl inside the container for ad-hoc jq queries.
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch: {}
+  # Drop Claude Code prompt text (only present with OTEL_LOG_USER_PROMPTS=1) from log events.
+  attributes/strip_prompts:
+    actions:
+      - key: prompt
+        action: delete
+      - key: prompt_text
+        action: delete
+
+exporters:
+  debug:
+    verbosity: basic
+  file/traces:
+    path: /tmp/otel/traces.jsonl
+  file/logs:
+    path: /tmp/otel/logs.jsonl
+  file/metrics:
+    path: /tmp/otel/metrics.jsonl
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, file/traces]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, file/metrics]
+    logs:
+      receivers: [otlp]
+      processors: [attributes/strip_prompts, batch]
+      exporters: [debug, file/logs]
