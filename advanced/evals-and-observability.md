@@ -100,7 +100,7 @@ Source: https://platform.claude.com/docs/en/test-and-evaluate/develop-tests.md, 
 
 **Problem.** Someone edits `prompts/support.md` to fix one complaint and quietly breaks the refund policy.
 
-**Setup.** Copy [`ci/prompt-evals.yml`](examples/evals-and-observability/ci/prompt-evals.yml) to `.github/workflows/` in your repo. It has three jobs:
+**Setup.** Copy [`ci/prompt-evals.yml`](examples/evals-and-observability/ci/prompt-evals.yml) to `.github/workflows/` in your repo. **Template, not yet run on GitHub.** It has three jobs:
 
 | Job | Runs on | Calls a model | Gate |
 |---|---|---|---|

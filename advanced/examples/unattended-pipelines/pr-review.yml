@@ -1,3 +1,4 @@
+# TEMPLATE, NOT YET RUN ON GITHUB. Syntax-checked only; test in a scratch repo first.
 # Copy to .github/workflows/claude-pr-review.yml in YOUR repo (not this one).
 # Based on the documented code-review plugin workflow, plus cost/timeout/concurrency
 # guards and a failure ping. Docs: https://code.claude.com/docs/en/github-actions

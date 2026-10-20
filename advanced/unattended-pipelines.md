@@ -110,7 +110,7 @@ Source: https://code.claude.com/docs/en/routines · https://code.claude.com/docs
 
 **Problem.** You want Claude reviewing every same-repo PR with inline comments, but not on drafts, not twice in parallel on a fast push sequence, not running forever, and with a ping when the job itself breaks.
 
-**Setup.** Install the app and secret with `/install-github-app` (needs `gh auth login` and repo admin), or manually: install the Claude GitHub App and add `ANTHROPIC_API_KEY`, or `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`. Then copy [`pr-review.yml`](examples/unattended-pipelines/pr-review.yml) to `.github/workflows/`. On top of the documented plugin example it adds:
+**Setup.** Install the app and secret with `/install-github-app` (needs `gh auth login` and repo admin), or manually: install the Claude GitHub App and add `ANTHROPIC_API_KEY`, or `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`. Then copy [`pr-review.yml`](examples/unattended-pipelines/pr-review.yml) to `.github/workflows/`. **Template, not yet run on GitHub.** On top of the documented plugin example it adds:
 
 ```yaml
 concurrency:
@@ -151,7 +151,7 @@ Source: https://code.claude.com/docs/en/github-actions
 
 **Problem.** Auto-labelling new issues, where the issue body is attacker-controlled text. You want structured, validated output and no model-held write access.
 
-**Setup.** Copy [`issue-triage-headless.yml`](examples/unattended-pipelines/issue-triage-headless.yml) to `.github/workflows/` and [`triage_apply.py`](examples/unattended-pipelines/triage_apply.py) to `scripts/`. Create labels `p0`–`p3` and `triaged-by-claude`. The core call:
+**Setup.** Copy [`issue-triage-headless.yml`](examples/unattended-pipelines/issue-triage-headless.yml) (template, not yet run on GitHub) to `.github/workflows/` and [`triage_apply.py`](examples/unattended-pipelines/triage_apply.py) to `scripts/`. Create labels `p0`–`p3` and `triaged-by-claude`. The core call:
 
 ```bash
 claude --bare -p "Classify the GitHub issue on stdin. Pick labels ONLY from the ALLOWED LABELS list. ..." \
@@ -222,7 +222,7 @@ Source: https://claude.com/docs/claude-tag/users/proactivity · https://claude.c
 | Concern | Do |
 |---|---|
 | Idempotency | Derive a run key (`<job>:<ISO week>`, `<alert id>`, `<sha>`) and check it before acting. Put it in branch names, PR titles and the last log line. Use marker labels for GitHub objects. |
-| State | Keep it outside the run: a `claude/state` branch, an artifact DB doc (see [artifacts-as-apps](artifacts-as-apps.md) recipe 2), or a ticket. Advance the mark only after the side effects land. |
+| State | Keep it outside the run: a `claude/state` branch, an artifact DB doc (see [artifacts-as-apps](experimental/artifacts-as-apps.md) recipe 2), or a ticket. Advance the mark only after the side effects land. |
 | Retries | Retry transport (429/5xx) with backoff and a cap. Never let the model retry a write in a loop. Pin writes to versions when the store supports it. |
 | Notifications | Post on success *and* failure, with one greppable line. Add a dead-man check for "didn't run at all". |
 | Blast radius | Remove unused connectors (they're all included by default), give Actions minimal `permissions:`, use `--tools`/`--allowedTools`, and keep secrets in GitHub secrets or environment network secrets, never in prompts. |

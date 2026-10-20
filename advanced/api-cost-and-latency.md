@@ -94,19 +94,19 @@ To change effort mid-conversation without breaking the cache (beta: Fable 5.1, O
 
 **Output.** `bench_results.csv` (one row per run) and a markdown table of medians.
 
-> **ILLUSTRATIVE SAMPLE: shows the table's shape only. These are not measurements.** Token counts are invented. Costs are computed from them at list price for a 600-token prompt. Latency and pass columns are placeholders. Run `bench.py` for real numbers.
+| model | effort | speed | assumed out tok | $/req | $/1k req |
+|---|---|---|---|---|---|
+| claude-haiku-5-5 | low | standard | 40 | 0.00008 | 0.08 |
+| claude-haiku-5-5 | medium | standard | 180 | 0.00015 | 0.15 |
+| claude-sonnet-5-5 | low | standard | 60 | 0.00180 | 1.80 |
+| claude-sonnet-5-5 | high | standard | 900 | 0.01020 | 10.20 |
+| claude-opus-5-5 | medium | standard | 700 | 0.01640 | 16.40 |
+| claude-opus-5-5 | medium | fast | 700 | 0.03280 | 32.80 |
+| claude-fable-5-1 | high | standard | 1500 | 0.08100 | 81.00 |
 
-| model | effort | speed | p50 total s | p50 TTFT s | p50 OTPS | p50 out tok | mean $/req | $/1k req | pass |
-|---|---|---|---|---|---|---|---|---|---|
-| claude-haiku-5-5 | low | standard | x.x | x.x | xxx | 40 | 0.00008 | 0.08 | xx% |
-| claude-haiku-5-5 | medium | standard | x.x | x.x | xxx | 180 | 0.00015 | 0.15 | xx% |
-| claude-sonnet-5-5 | low | standard | x.x | x.x | xxx | 60 | 0.00180 | 1.80 | xx% |
-| claude-sonnet-5-5 | high | standard | x.x | x.x | xxx | 900 | 0.01020 | 10.20 | xx% |
-| claude-opus-5-5 | medium | standard | x.x | x.x | xxx | 700 | 0.01640 | 16.40 | xx% |
-| claude-opus-5-5 | medium | fast | x.x | x.x | xxx | 700 | 0.03280 | 32.80 | xx% |
-| claude-fable-5-1 | high | standard | x.x | x.x | xxx | 1500 | 0.08100 | 81.00 | xx% |
+These are list-price costs, not measurements. Each row is a 600-token prompt plus the assumed output-token count, priced with `pricing.py` at the rates on the pricing page (read 2026-10-20). The table has no latency or pass-rate columns because those can only come from real runs: `bench.py` reports p50 total, TTFT, OTPS and pass rate for your own workload.
 
-To read it: pick the cheapest row whose `pass` meets your bar, then confirm it at a higher `--runs` value. On this kind of workload, most of the spread comes from output tokens, which is exactly what effort controls.
+To read `bench.py`'s output: pick the cheapest row whose pass rate meets your bar, then confirm it with a higher `--runs` value. Most of the cost spread comes from output tokens, which is exactly what effort controls.
 
 **Failure modes.**
 - *400 errors on some cells.* Not every model accepts every level, and several reject `thinking: {"type": "disabled"}` at `xhigh` or `max`. On Opus 5.5 it's rejected at every level because thinking is always on. `bench.py` logs the HTTP error and moves on.

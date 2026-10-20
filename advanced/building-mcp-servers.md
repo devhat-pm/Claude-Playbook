@@ -29,6 +29,8 @@ Pick the deployment based on who needs to reach the server:
 
 **Setup.** [`python/server.py`](examples/building-mcp-servers/python/server.py). The parts that matter:
 
+**Requires Python >= 3.11** (MCP Python SDK v2). The file compiles on older versions but won't run there.
+
 ```python
 class OrdersTokenVerifier(TokenVerifier):
     async def verify_token(self, token: str) -> Optional[AccessToken]:

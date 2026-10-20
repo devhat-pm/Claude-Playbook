@@ -2,9 +2,9 @@
 // and a metrics doc that a scheduled task writes without republishing the page.
 //
 // Capability API per Claude Code's bundled artifact-capabilities skill,
-// runtime contract 0.2.87. Not in public docs as of 2026-10: treat names as
-// (unverified) against a public reference and re-check the .d.ts files your
-// Claude Code version ships before reusing.
+// runtime contract 0.2.87. Every call here was checked against that contract's
+// .d.ts files on 2026-10-20. The API is UNDOCUMENTED publicly and may change:
+// re-check the .d.ts files your Claude Code version ships before reusing.
 //
 // Declared at publish time (see advanced/artifacts-as-apps.md, recipe 1):
 // capabilities: {

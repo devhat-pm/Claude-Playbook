@@ -1,3 +1,4 @@
+# Requires Python >= 3.11 (MCP Python SDK v2).
 """Remote MCP server for an internal Orders API (MCP Python SDK v2, `mcp>=2.3`).
 
 Runtime: Python 3.11+ (SDK README; PyPI metadata says >=3.10). Kept 3.9-syntax-clean on purpose.

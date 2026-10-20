@@ -1,3 +1,4 @@
+# TEMPLATE, NOT YET RUN ON GITHUB. Syntax-checked only; test in a scratch repo first.
 # Copy to .github/workflows/claude-issue-triage.yml in YOUR repo, together with
 # scripts/triage_apply.py (this folder's triage_apply.py).
 #

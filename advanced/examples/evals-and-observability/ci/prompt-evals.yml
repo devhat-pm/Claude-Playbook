@@ -1,3 +1,4 @@
+# TEMPLATE, NOT YET RUN ON GITHUB. Syntax-checked only; test in a scratch repo first.
 # Copy to .github/workflows/prompt-evals.yml in YOUR repo (not this playbook).
 # Assumed layout: prompts/support.md, evals/cases.jsonl, evals/baseline.json,
 # evals/golden_outputs.jsonl (approved replies, {"id","output"} per line), evals/requirements.txt,

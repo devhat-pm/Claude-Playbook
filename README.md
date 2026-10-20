@@ -35,7 +35,7 @@ Recipes for daily users: problem, exact setup, output, failure modes. Start with
 | 6 | [API cost & latency](advanced/api-cost-and-latency.md) | Caching, effort, fast mode, batch, token counting, routing, benchmark |
 | 7 | [Agentic API patterns](advanced/agentic-api-patterns.md) | Tool runner, programmatic tool calling, tool search, structured outputs, Managed Agents |
 | 8 | [Browser & computer automation](advanced/browser-and-computer-automation.md) | Build-test-verify in Chrome, GIF bug reports, scraping, injection defenses |
-| 9 | [Artifacts as apps](advanced/artifacts-as-apps.md) | Runtime capabilities, shared DB, design systems, design sync, multi-file |
+| 9 | [Artifacts as apps](advanced/experimental/artifacts-as-apps.md) *(experimental)* | Runtime capabilities, shared DB, design systems, design sync, multi-file. Page-side API is undocumented. |
 | 10 | [Unattended pipelines](advanced/unattended-pipelines.md) | Scheduled tasks, routines, GitHub Actions headless, Slack, idempotency |
 | 11 | [Security & prompt injection](advanced/security-and-prompt-injection.md) | Threat model, confirmation gates, least privilege, audit, red-teaming |
 | 12 | [Evals & observability](advanced/evals-and-observability.md) | Eval sets, LLM-as-judge, CI regression, OpenTelemetry, usage APIs |
