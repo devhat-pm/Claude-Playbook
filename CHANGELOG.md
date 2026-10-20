@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.0-draft (unreleased)
+
+- **Role guides** in `roles/`, for working professionals who already have Claude: doctors and clinicians, developers, designers, researchers and academics, SEO and content, HR and recruiters, marketers, and finance specialists. Each has 5 quick wins, 3 deeper setups, field prompts with reasoning, guardrails, connectors and skills, and a sample Project instruction block. Sources are cited per workflow, and unconfirmed claims are marked "(unverified)".
+- **`roles/_shared-setup.md`**: Projects, memory, writing styles (now migrating to skills), connectors, skills, scheduled tasks, Claude in Chrome, a data-and-privacy checklist and model choice. Role guides link to it instead of repeating it.
+- **README**: new "By role" table under Fundamentals, plus `roles/README.md` with a best first workflow per role.
+
 ## v0.1.0 — 2026-10-20
 
 First public release.
