@@ -1,0 +1,44 @@
+<title>Team Standup</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1c1b19;--muted:#6b675f;--card:#fff;--line:#e3e0d8;--accent:#c2410c;--warn:#b91c1c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161513;--fg:#ece9e2;--muted:#a19c92;--card:#201f1c;--line:#34322d;--accent:#fb923c;--warn:#f87171}}
+:root[data-theme="dark"]{--bg:#161513;--fg:#ece9e2;--muted:#a19c92;--card:#201f1c;--line:#34322d;--accent:#fb923c;--warn:#f87171}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;margin:0;padding:24px 16px}
+main{max-width:880px;margin:0 auto;display:grid;gap:20px}
+h1{font-size:22px;margin:0}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px}
+form{display:grid;gap:8px}
+textarea{width:100%;box-sizing:border-box;min-height:44px;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:6px}
+button{font:inherit;padding:6px 12px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;justify-self:start}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+li{border-left:3px solid var(--line);padding-left:10px}
+li.mine{border-color:var(--accent)}
+li p{margin:2px 0}
+.blocker{color:var(--warn)}
+.empty,.meta,#status{color:var(--muted)}
+#metrics{display:flex;flex-wrap:wrap;gap:10px}
+.tile{display:grid;border:1px solid var(--line);border-radius:6px;padding:8px 12px;min-width:120px}
+.tile .value{font-size:22px;font-weight:600}
+#summary{white-space:pre-wrap}
+</style>
+<main>
+  <h1>Team standup</h1>
+  <p id="status" role="status"></p>
+  <section aria-labelledby="m-h"><h2 id="m-h">This week</h2><div id="metrics"></div></section>
+  <section aria-labelledby="f-h">
+    <h2 id="f-h">Your update</h2>
+    <form id="entry-form">
+      <label>Yesterday<textarea name="yesterday" maxlength="500"></textarea></label>
+      <label>Today<textarea name="today" maxlength="500"></textarea></label>
+      <label>Blockers<textarea name="blockers" maxlength="500"></textarea></label>
+      <button type="submit">Save</button>
+    </form>
+  </section>
+  <section aria-labelledby="e-h">
+    <h2 id="e-h">Today</h2>
+    <button id="summarize" type="button">Summarize with Claude</button>
+    <p id="summary"></p>
+    <ul id="entries"></ul>
+  </section>
+</main>
+<script src="app.js"></script>

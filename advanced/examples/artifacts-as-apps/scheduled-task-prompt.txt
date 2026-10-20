@@ -1,0 +1,21 @@
+Weekly metrics -> standup board db (cloud scheduled task prompt; paste as the task's prompt)
+
+Goal: refresh the "This week" tiles on the standup board artifact WITHOUT republishing the page.
+
+Artifact: https://claude.ai/code/artifact/<YOUR-ARTIFACT-ID>
+Repository (cloned each run): <org>/<repo>, which contains
+  advanced/examples/artifacts-as-apps/build_metrics_doc.py
+
+Steps:
+1. Pull last week's numbers through the <Linear|GitHub|BigQuery> connector:
+   issues closed, PRs merged, median PR age (hours), open P1 bugs.
+   Write them to /tmp/metrics.csv with header "label,value".
+2. Run: python3 advanced/examples/artifacts-as-apps/build_metrics_doc.py /tmp/metrics.csv /tmp/weekly.json
+   If it exits non-zero, stop and report the stderr line. Do not write partial data.
+3. Read the db document metrics/weekly on the artifact above.
+   - If its run_key equals the run_key printed in step 2, do nothing (already written this week) and say "skipped: up to date".
+   - Otherwise write /tmp/weekly.json to collection "metrics", doc_id "weekly" with a set,
+     pinned to the version you just read (omit the pin only if the doc does not exist yet).
+   - On a version conflict, re-read once and redo the write. Never retry more than once.
+4. Do not publish, republish, or edit the artifact page itself. Do not touch the "entries" collection.
+5. Final message: one line, "metrics/weekly <run_key>: written|skipped|failed (<reason>)".
