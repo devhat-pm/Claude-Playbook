@@ -7,6 +7,9 @@ Runnable scripts are in [`examples/api-cost-and-latency/`](examples/api-cost-and
 | `pricing.py` | List-price table and a `usage -> USD` function: cache 5m/1h writes, model-specific cache-read multipliers, fast mode, batch, Haiku 5.5 long-prompt tier, US geo |
 | `cache_probe.py` | Measures cache writes, reads, hit ratio, TTFT and savings for a fixed prefix |
 | `bench.py` | Streams a model × effort × speed matrix and reports TTFT, total latency, output tokens/s, cost and pass rate |
+| `task.json` | 20 labelled spam/ham messages (phishing, newsletters, personal mail, receipts) used for the measured run in Recipe 2 |
+| `cache-fixture/` | A fictional ~3.5k-token handbook and six questions used for the measured run in Recipe 1 |
+| `results-2026-10-20.json`, `cache-results-2026-10-20.txt` | Raw output of those two runs |
 | `batch_pipeline.py` | JSONL → Message Batches → JSONL, with chunking, cached shared prefix, retry file and cost |
 | `route.py` | Picks model, effort and speed by task type and token count, and prices the alternatives |
 
@@ -49,19 +52,33 @@ python3 cache_probe.py --doc handbook.md --questions qs.txt --model claude-sonne
 python3 cache_probe.py --doc handbook.md --questions qs.txt --ttl 1h --gap 400   # survive >5 min gaps
 ```
 
+**Minimum prefix.** Nothing is cached unless the prefix up to the breakpoint reaches the model's minimum cacheable length: 512 tokens on Fable 5.1, Opus 5.5, Sonnet 5.5 and Haiku 5.5, and higher on older models. Below it, the API returns no error and both cache fields are 0. Size test fixtures well above the minimum. The measured run below uses a ~3.5k-token prefix so the result doesn't depend on that threshold.
+
 `--warm` first sends the same prefix with `max_tokens: 0`. The API writes the cache and returns an empty `content` with `stop_reason: "max_tokens"`, and no output is billed. A user's first real request then reads from cache.
 
 Read these three `usage` fields: `cache_creation_input_tokens` (written), `cache_read_input_tokens` (read) and `input_tokens` (after the last breakpoint). Hit ratio = read ÷ (read + written + input). With 1h writes, `usage.cache_creation.ephemeral_1h_input_tokens` shows the split.
 
-**Output.** One row per request, then totals. Illustrative arithmetic, not a measurement: a 40k-token doc on Sonnet 5.5 with 10 questions (output ignored):
+**Output.** One row per request, then totals. Measured on 2026-10-20 (one run, not a benchmark suite), Claude API with default `inference_geo` (not pinned), client region not recorded:
 
 ```
-#     write     read   uncach  ttft_s   hit%     cost$
-1     40000        0       12    …        0%   0.10002      <- 40k x $2.50/MTok
-2         0    40000       11    …      100%   0.00402      <- 40k x $0.10/MTok
-...
-hit ratio 90.0%; cost with cache ≈ $0.136 vs without ≈ $0.80 (saved ~83%)
+python3 cache_probe.py --doc cache-fixture/handbook.md --questions cache-fixture/questions.txt \
+  --model claude-sonnet-5-5 --warm
+
+prefix ~3483 tokens (count_tokens estimate)
+warm-up: wrote 3476 cache tokens, stop_reason=max_tokens
+#      write     read   uncach  ttft_s    hit%     cost$
+1          0     3476       22    0.87     99%   0.00077
+2          0     3476       23    0.77     99%   0.00083
+3          0     3476       19    1.38     99%   0.00104
+4          0     3476       23    1.51     99%   0.00124
+5          0     3476       18    0.88     99%   0.00148
+6          0     3476       16    0.96    100%   0.00122
+
+hit ratio (read / all prompt tokens): 99.4%
+cost with cache $0.0066 vs without $0.0462  (saved 86%)
 ```
+
+`write` is `usage.cache_creation_input_tokens`, `read` is `usage.cache_read_input_tokens` and `uncach` is `usage.input_tokens`. The warm-up wrote 3,476 tokens (`cache_creation_input_tokens`). Every later request then read all 3,476 from cache (`cache_read_input_tokens`) and wrote none. The totals leave out the warm-up write itself, about $0.0087 at $2.50/MTok, so the net saving across these six questions is about 67%. Raw output: [`cache-results-2026-10-20.txt`](examples/api-cost-and-latency/cache-results-2026-10-20.txt).
 
 **Failure modes.**
 - *Both cache fields are 0.* The prefix is below the minimum: 512 tokens on Fable 5.1, Opus 5.5, Sonnet 5.5 and Haiku 5.5, and higher on older models. No error is returned. The probe prints `nothing cached` and runs `count_tokens` on the prefix up front.
@@ -79,32 +96,43 @@ Source: https://platform.claude.com/docs/en/build-with-claude/prompt-caching · 
 
 **Problem.** Teams jump between models when the cheaper lever is `output_config.effort`. Effort scales every output token: thinking, text and tool calls. Defaults also differ by model. Opus 5.5 and Haiku 5.5 default to `medium`, while Fable 5.1 and Sonnet 5.5 default to `high`. So "same request, new model" also silently changes effort.
 
-**Setup.** Write a task file and a pass regex, then sweep:
+**Setup.** Either write a labelled task file (a JSON list of `{"id", "text", "label"}`) or a single prompt plus a pass regex, then sweep:
 
 ```bash
-python3 bench.py --prompt-file task.txt --system-file sys.txt \
+python3 bench.py --task-file task.json \
   --models claude-haiku-5-5 claude-sonnet-5-5 claude-opus-5-5 \
-  --efforts low medium high --runs 5 --expect '"label":\s*"(spam|ham)"'
+  --efforts low medium high --runs 5 --max-tokens 8000
+python3 bench.py --prompt-file task.txt --system-file sys.txt ... --expect '"label":\s*"(spam|ham)"'
 python3 bench.py ... --dry-run     # prints the 9-cell matrix, no calls
 ```
 
-Each run streams (`client.messages.stream`), so TTFT is the first `content_block_delta` (thinking or text), and output tokens/s = output tokens ÷ (total − TTFT). Cost comes from the response `usage` through `pricing.py`. The docs show `output_config` and `speed` as keyword arguments on `messages.create`. Passing them the same way to `messages.stream` is (unverified). If your SDK version rejects them, upgrade it, or pass them through `extra_body`. At `xhigh` or `max`, raise `--max-tokens` to 64k or more: `max_tokens` is a hard cap on thinking plus text.
+With `--task-file`, each run sends every item in one request and asks for a JSON object mapping id to label. The pass rate is the fraction of items whose label matches exactly. The script loads `ANTHROPIC_API_KEY` from a git-ignored `.env` next to it if `python-dotenv` is installed.
+
+Each run streams (`client.messages.stream`), so TTFT is the first `content_block_delta` (thinking or text), and output tokens/s = output tokens ÷ (total − TTFT). Cost comes from the response `usage` through `pricing.py`. The docs show `output_config` and `speed` as keyword arguments on `messages.create`. `output_config` passed the same way to `messages.stream` worked in the measured run below (Python SDK 0.125.0). Passing `speed` to `messages.stream` is (unverified), because that run used standard speed only. If your SDK version rejects either, upgrade it, or pass them through `extra_body`. At `xhigh` or `max`, raise `--max-tokens` to 64k or more: `max_tokens` is a hard cap on thinking plus text.
 
 To change effort mid-conversation without breaking the cache (beta: Fable 5.1, Opus 5.5, Opus 5, Sonnet 5.5, Haiku 5.5), send header `anthropic-beta: mid-conversation-output-config-2026-07-01` and insert `{"role": "system", "content": [], "output_config": {"effort": "low"}}` before the next user turn. Changing top-level effort instead starts the cache over.
 
-**Output.** `bench_results.csv` (one row per run) and a markdown table of medians.
+**Output.** `bench_results.csv` (one row per run, or JSON if `--out` ends in `.json`) and a markdown table of medians.
 
-| model | effort | speed | assumed out tok | $/req | $/1k req |
-|---|---|---|---|---|---|
-| claude-haiku-5-5 | low | standard | 40 | 0.00008 | 0.08 |
-| claude-haiku-5-5 | medium | standard | 180 | 0.00015 | 0.15 |
-| claude-sonnet-5-5 | low | standard | 60 | 0.00180 | 1.80 |
-| claude-sonnet-5-5 | high | standard | 900 | 0.01020 | 10.20 |
-| claude-opus-5-5 | medium | standard | 700 | 0.01640 | 16.40 |
-| claude-opus-5-5 | medium | fast | 700 | 0.03280 | 32.80 |
-| claude-fable-5-1 | high | standard | 1500 | 0.08100 | 81.00 |
+Measured on 2026-10-20, 10:05–10:07 UTC. This is **one run, not a benchmark suite**: 5 repetitions per cell, `task.json` (20 spam/ham items, about 1.65k prompt tokens), `--max-tokens 8000`. It used the Claude API with default `inference_geo` (not pinned); the client region wasn't recorded. Latency includes the network path from one client machine. Cost is computed from each response's `usage` at list price.
 
-These are list-price costs, not measurements. Each row is a 600-token prompt plus the assumed output-token count, priced with `pricing.py` at the rates on the pricing page (read 2026-10-20). The table has no latency or pass-rate columns because those can only come from real runs: `bench.py` reports p50 total, TTFT, OTPS and pass rate for your own workload.
+| model | effort | speed | p50 total s | p50 TTFT s | p50 out tok | mean $/req | $/1k req | pass (20 items × 5 runs) |
+|---|---|---|---|---|---|---|---|---|
+| claude-haiku-5-5 | low | standard | 1.37 | 1.00 | 144 | 0.00024 | 0.24 | 100% |
+| claude-haiku-5-5 | medium | standard | 1.32 | 0.98 | 144 | 0.00024 | 0.24 | 100% |
+| claude-haiku-5-5 | high | standard | 1.44 | 1.06 | 144 | 0.00024 | 0.24 | 100% |
+| claude-sonnet-5-5 | low | standard | 1.60 | 1.04 | 125 | 0.00454 | 4.54 | 100% |
+| claude-sonnet-5-5 | medium | standard | 1.57 | 1.02 | 125 | 0.00458 | 4.58 | 100% |
+| claude-sonnet-5-5 | high | standard | 1.76 | 1.19 | 125 | 0.00458 | 4.58 | 100% |
+| claude-opus-5-5 | low | standard | 2.33 | 1.48 | 144 | 0.00939 | 9.39 | 100% |
+| claude-opus-5-5 | medium | standard | 2.76 | 1.86 | 144 | 0.00947 | 9.47 | 100% |
+| claude-opus-5-5 | high | standard | 2.41 | 1.75 | 144 | 0.00947 | 9.47 | 100% |
+| claude-opus-5-5 | any | fast | not measured | | | | | |
+| claude-fable-5-1 | any | standard | not measured | | | | | |
+
+Raw rows: [`results-2026-10-20.json`](examples/api-cost-and-latency/results-2026-10-20.json). The whole run cost about $0.21.
+
+How to read it: this task is too easy to separate the models. Every cell labelled all 20 items correctly, and output-token counts barely moved with effort, so effort changed neither cost nor quality here. The spread is price per token, about 40× from Haiku to Opus, plus roughly 1 s more latency on Opus. On a task this easy, the cheapest cell wins. A harder task, where effort changes thinking length and the pass rate drops, is where the sweep earns its keep.
 
 To read `bench.py`'s output: pick the cheapest row whose pass rate meets your bar, then confirm it with a higher `--runs` value. Most of the cost spread comes from output tokens, which is exactly what effort controls.
 

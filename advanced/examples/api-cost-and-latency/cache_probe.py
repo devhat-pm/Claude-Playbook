@@ -24,6 +24,12 @@ from typing import List
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pricing import cost_usd, uncached_cost_usd  # noqa: E402
 
+try:  # optional: pick up ANTHROPIC_API_KEY from a git-ignored .env next to this script
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+except ImportError:
+    pass
+
 INSTRUCTIONS = ("You answer questions strictly from the reference document. "
                 "Quote the section heading you used. Say 'not in document' otherwise.")
 

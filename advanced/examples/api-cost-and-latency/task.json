@@ -1,0 +1,22 @@
+[
+ {"id": "1", "label": "spam", "text": "From: security@paypa1-alerts.com\nSubject: Your account has been limited\n\nWe noticed unusual activity. Verify your identity within 24 hours or your account will be permanently suspended: http://paypa1-verify.co/login"},
+ {"id": "2", "label": "ham", "text": "From: Priya\nSubject: Saturday?\n\nHey, are we still on for the hike on Saturday? I can pick you up around 8. Bring the good snacks this time."},
+ {"id": "3", "label": "spam", "text": "Subject: CONGRATULATIONS!!! You have WON a $1,000 Walmart gift card\n\nYou were randomly selected. Click below and pay only $4.95 shipping to claim your prize before it expires tonight!"},
+ {"id": "4", "label": "ham", "text": "From: orders@bookshop.example\nSubject: Your receipt for order #48213\n\nThanks for your purchase. 1 x 'The Pragmatic Programmer' - $39.99. Paid with Visa ending 4421. Estimated delivery: Oct 24."},
+ {"id": "5", "label": "spam", "text": "Subject: Re: invoice\n\nDear customer, attached is your overdue invoice. Open the attached file Invoice_Oct.zip and enable macros to view the content."},
+ {"id": "6", "label": "ham", "text": "From: The Morning Brew <newsletter@morningbrew.example>\nSubject: Markets wrap: rates hold steady\n\nGood morning. Here is what you need to know today. You are receiving this because you subscribed. Unsubscribe anytime."},
+ {"id": "7", "label": "spam", "text": "Subject: Lose 30 lbs in 30 days - doctors HATE this\n\nNo diet, no exercise. Order 3 bottles today and get 2 FREE. Limited stock. Reply STOP to opt out."},
+ {"id": "8", "label": "ham", "text": "From: Dr. Okafor's Office\nSubject: Appointment reminder\n\nThis is a reminder of your dental cleaning on Thursday, Oct 23 at 2:30 PM. Reply C to confirm or call us to reschedule."},
+ {"id": "9", "label": "spam", "text": "From: Mr. James Adewale\nSubject: Confidential business proposal\n\nI am a bank manager with an unclaimed deposit of $18.5 million. I need a trustworthy foreign partner to transfer the funds. You will receive 40%. Please send your full name and bank details."},
+ {"id": "10", "label": "ham", "text": "From: Mom\nSubject: Photos from the weekend\n\nAttached are the pictures from Grandpa's birthday. The one with the cake is my favourite. Call me when you get a chance."},
+ {"id": "11", "label": "spam", "text": "Subject: Your Apple ID was used to sign in on a new device\n\nIf this wasn't you, update your payment info immediately at appleid-support-check.net or your Apple ID will be locked."},
+ {"id": "12", "label": "ham", "text": "From: GitHub <noreply@github.com>\nSubject: [acme/api] Pull request #312 merged\n\nYour pull request 'Fix pagination off-by-one' was merged into main by mchen."},
+ {"id": "13", "label": "spam", "text": "Subject: Work from home - earn $5,000/week\n\nNo experience required! Just 2 hours a day. Thousands already joined. Text JOB to 55123 to start earning today."},
+ {"id": "14", "label": "ham", "text": "From: Uber Receipts\nSubject: Your Tuesday evening trip with Uber\n\nTotal: $18.42. Trip from Market St to Valencia St, 4.1 mi, 16 min. Thanks for riding."},
+ {"id": "15", "label": "spam", "text": "Subject: Hot singles in your area want to meet you\n\nDon't miss out! Create your FREE profile now and see who's waiting. 100% discreet."},
+ {"id": "16", "label": "ham", "text": "From: Alex (Engineering)\nSubject: Postmortem draft for Monday's outage\n\nI've put the draft in the shared folder. Could you review the timeline section before Wednesday's review meeting?"},
+ {"id": "17", "label": "spam", "text": "From: IRS Tax Refund Dept\nSubject: You are eligible for a tax refund of $842.17\n\nTo receive your refund, complete the form with your SSN and debit card PIN at irs-refund-claims.info."},
+ {"id": "18", "label": "ham", "text": "From: City Library\nSubject: Items due soon\n\nThe following item is due on Oct 27: 'Braiding Sweetgrass'. You can renew online from your account page."},
+ {"id": "19", "label": "spam", "text": "Subject: URGENT: CEO request\n\nAre you at your desk? I need you to buy 10 Google Play gift cards for a client today and send me the codes. Keep this confidential. Sent from my iPhone"},
+ {"id": "20", "label": "ham", "text": "From: Substack <hello@substack.example>\nSubject: New post from Slow Reads: 'Why I still write by hand'\n\nA new post is out from a publication you follow. Read it in the app or on the web."}
+]

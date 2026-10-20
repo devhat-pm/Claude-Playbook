@@ -6,6 +6,7 @@
     python3 bench.py --prompt-file task.txt --models claude-haiku-5-5 claude-sonnet-5-5 \
         claude-opus-5-5 --efforts low medium high --runs 5 --expect '"label":\s*"(spam|ham)"'
     python3 bench.py --prompt-file task.txt --models claude-opus-5-5 --speeds standard fast
+    python3 bench.py --task-file task.json --models claude-haiku-5-5 --efforts low --runs 5
     python3 bench.py ... --dry-run          # print the matrix and exit, no API calls
 
 Measures per cell (model x effort x speed), streaming so time-to-first-token is real:
@@ -13,13 +14,17 @@ Measures per cell (model x effort x speed), streaming so time-to-first-token is 
   total_s  request start -> final message
   otps     output tokens / (total_s - ttft_s)
   cost     from response usage via pricing.py (list prices)
-  pass     fraction of runs whose final text matches --expect (if given)
-Writes bench_results.csv and prints a markdown table of medians.
+  pass     fraction of runs whose final text matches --expect (if given), or with
+           --task-file the mean fraction of items labelled exactly right
+--task-file takes a JSON list of {"id", "text", "label"}; every run sends all items in one
+request and scores the returned {"id": "label"} object item by item.
+Writes bench_results.csv (or .json if --out ends in .json) and prints a table of medians.
 """
 from __future__ import annotations
 
 import argparse
 import csv
+import json
 import os
 import re
 import statistics
@@ -29,6 +34,12 @@ from typing import Dict, List, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pricing import PRICES, cost_usd  # noqa: E402
+
+try:  # optional: pick up ANTHROPIC_API_KEY from a git-ignored .env next to this script
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+except ImportError:
+    pass
 
 EFFORTS = ("low", "medium", "high", "xhigh", "max")
 FAST_MODELS = {"claude-opus-5-5"}  # fast mode without beta header (fast-mode docs)
@@ -66,13 +77,34 @@ def one_run(client, model: str, effort: str, speed: str, system: str, prompt: st
     }
 
 
+def task_prompt(items: List[Dict[str, str]]) -> str:
+    labels = sorted({it["label"] for it in items})
+    lines = ["Classify each message below as one of: %s." % ", ".join(labels),
+             'Reply with only a JSON object mapping each id to its label, e.g. {"1": "%s"}.'
+             % labels[0], ""]
+    for it in items:
+        lines.append("<message id=\"%s\">\n%s\n</message>" % (it["id"], it["text"]))
+    return "\n".join(lines)
+
+
+def score(text: str, items: List[Dict[str, str]]) -> float:
+    m = re.search(r"\{.*\}", text, re.S)
+    try:
+        got = json.loads(m.group(0)) if m else {}
+    except json.JSONDecodeError:
+        got = {}
+    return sum(str(got.get(it["id"], "")).strip() == it["label"] for it in items) / len(items)
+
+
 def median(xs: List[float]) -> float:
     return statistics.median(xs) if xs else float("nan")
 
 
 def main(argv: List[str]) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--prompt-file", required=True)
+    src = ap.add_mutually_exclusive_group(required=True)
+    src.add_argument("--prompt-file")
+    src.add_argument("--task-file", help="JSON list of {id, text, label}; scored per item")
     ap.add_argument("--system-file")
     ap.add_argument("--models", nargs="+", default=list(PRICES))
     ap.add_argument("--efforts", nargs="+", default=["medium"], choices=EFFORTS)
@@ -85,7 +117,13 @@ def main(argv: List[str]) -> int:
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
 
-    prompt = open(args.prompt_file, encoding="utf-8").read()
+    items: List[Dict[str, str]] = []
+    if args.task_file:
+        with open(args.task_file, encoding="utf-8") as fh:
+            items = json.load(fh)
+        prompt = task_prompt(items)
+    else:
+        prompt = open(args.prompt_file, encoding="utf-8").read()
     system = open(args.system_file, encoding="utf-8").read() if args.system_file else ""
     cells = [(m, e, s) for m in args.models for e in args.efforts for s in args.speeds
              if s == "standard" or m in FAST_MODELS]
@@ -112,7 +150,10 @@ def main(argv: List[str]) -> int:
                                                          exc.status_code, exc.message))
                 continue
             r["run"] = i + 1
-            r["pass"] = bool(expect.search(r["text"])) if expect else None
+            if items:
+                r["pass"] = score(r["text"], items)
+            else:
+                r["pass"] = bool(expect.search(r["text"])) if expect else None
             rows.append(r)
             print("  %-18s %-6s %-8s run%d %6.2fs ttft %5.2fs out %5d $%.5f" % (
                 model, effort, r["speed"], i + 1, r["total_s"], r["ttft_s"],
@@ -121,9 +162,12 @@ def main(argv: List[str]) -> int:
     fields = ["model", "effort", "speed", "run", "ttft_s", "total_s", "otps", "input_tokens",
               "output_tokens", "cache_read", "cost_usd", "stop_reason", "pass"]
     with open(args.out, "w", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
-        w.writeheader()
-        w.writerows(rows)
+        if args.out.endswith(".json"):
+            json.dump(rows, fh, indent=1)
+        else:
+            w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+            w.writeheader()
+            w.writerows(rows)
 
     print("\n| model | effort | speed | p50 total s | p50 TTFT s | p50 OTPS | p50 out tok "
           "| mean $/req | $/1k req | pass |")

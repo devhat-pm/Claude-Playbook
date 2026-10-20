@@ -8,8 +8,8 @@ Every claim still marked "(unverified)" in `advanced/`, as of 2026-10-20. To cle
   Verify: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/
 - [ ] **building-mcp-servers.md** (Recipe 5): whether the MCP tunnel proxy forwards the original `Host` header or the upstream's, and so whether `orders-mcp:*` needs to be in `allowed_hosts`.
   Verify: https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/concepts.md
-- [ ] **api-cost-and-latency.md** (Recipe 2): `output_config` and `speed` can be passed as keyword arguments to `client.messages.stream` (the docs only show them on `messages.create`). `bench.py` relies on this.
-  Verify: https://platform.claude.com/docs/en/build-with-claude/effort and the Python SDK's `messages.stream` signature
+- [ ] **api-cost-and-latency.md** (Recipe 2): `speed` can be passed as a keyword argument to `client.messages.stream` (the docs only show it on `messages.create`). `bench.py --speeds fast` relies on this. `output_config` on `messages.stream` was confirmed by the measured run on 2026-10-20 (Python SDK 0.125.0); `speed` wasn't exercised.
+  Verify: https://platform.claude.com/docs/en/build-with-claude/fast-mode and the Python SDK's `messages.stream` signature
 - [ ] **context-engineering.md** (Recipe 4): threshold compaction (`compact_20260112`) and `clear_tool_uses_20250919` can be combined in one request.
   Verify: https://platform.claude.com/docs/en/build-with-claude/compaction-threshold.md, https://platform.claude.com/docs/en/build-with-claude/context-editing.md
 - [ ] **agentic-api-patterns.md** (Recipe 1): whether the tool runner reuses the result of `generate_tool_call_response()` or runs the tools again when it auto-appends.

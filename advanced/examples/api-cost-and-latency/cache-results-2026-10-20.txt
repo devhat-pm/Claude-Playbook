@@ -1,0 +1,12 @@
+prefix ~3483 tokens (count_tokens estimate)
+warm-up: wrote 3476 cache tokens, stop_reason=max_tokens
+#      write     read   uncach  ttft_s    hit%     cost$
+1          0     3476       22    0.87     99%   0.00077
+2          0     3476       23    0.77     99%   0.00083
+3          0     3476       19    1.38     99%   0.00104
+4          0     3476       23    1.51     99%   0.00124
+5          0     3476       18    0.88     99%   0.00148
+6          0     3476       16    0.96    100%   0.00122
+
+hit ratio (read / all prompt tokens): 99.4%
+cost with cache $0.0066 vs without $0.0462  (saved 86%)
