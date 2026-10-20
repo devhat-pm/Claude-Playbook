@@ -8,7 +8,7 @@ The capabilities that aren't obvious from the UI, plus habits that separate casu
 
 - **Search past chats.** Claude can search and read your previous conversations when the feature is on (Settings → "Search and reference chats"). Just write as if it already knows: *"continue the budget sheet we built last week"*. Inside a Project it only searches that Project's chats; outside, only non-Project chats.
 - **Memory from chat history.** Separate toggle. Claude builds a profile of how you work and what you've told it. You can edit it, and you can tell Claude directly: *"remember that I prefer British spelling and no bullet points."*
-- **Writing-style profile.** Ask Claude to *learn your writing style* once; afterwards emails/posts it drafts "as you" sound like you. When a draft is off, say *"that doesn't sound like me"* and it updates the profile instead of starting over.
+- **Writing-style profile.** Ask Claude to *learn your writing style* once; afterwards emails/posts it drafts "as you" sound like you. When a draft is off, say *"that doesn't sound like me"* and it updates the profile instead of starting over. Note: custom writing styles are migrating to skills (June 2026). A migrated style starts turned off under Customize → Skills and runs as `/<name>-style`. See [shared setup: writing styles](../roles/_shared-setup.md#writing-styles).
 - **Incognito chats** exist for the opposite case: nothing saved to memory, nothing searchable later.
 
 ## 2. "Artifacts" are a whole suite of editable document types
@@ -21,8 +21,8 @@ Most people think an artifact is a code preview. It's a published, shareable pag
 | "write a doc / memo / spec / report" | **Docs** — editable, shareable, comments, exports to Word/PDF/Markdown/Google Docs |
 | "a tracker / budget / table with formulas" | **Sheets** |
 | "mock up the screen / a landing page / poster" | **Design** — canvas you can edit; part of Claude Design |
-| "brainstorm board / architecture sketch / flowchart" | **Whiteboard** |
-| "to-do list / project tasks with owners and dates" | **Tasks** |
+| "brainstorm board / architecture sketch / flowchart" | **Whiteboard**: artifact type; availability varies by account, no public docs yet |
+| "to-do list / project tasks with owners and dates" | **Tasks**: artifact type; availability varies by account, no public docs yet |
 | "dashboard / KPI page / scorecard" | **Dashboard** — can hold a tiny shared database that Claude updates later without rebuilding the page |
 | "a brand/design system" | **Design System** — reusable across every deck and design you make afterwards |
 | "short animation" / "a watercolour to paint by hand" | **Motion** / **Watercolor** |

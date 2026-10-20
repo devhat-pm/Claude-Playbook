@@ -229,19 +229,23 @@ Why: incomplete legends are a frequent reviewer complaint, and "ask me" stops Cl
 
 Biology is the one field where Claude applies safeguards beyond its usual judgment, and they are tuned to err on the side of declining. What to expect:
 
-- Fable 5.1 carries additional biology safeguards. Anthropic doesn't recommend it for professional biology research; biology-flagged requests may be routed to another model or declined. Opus 5.5 and Sonnet 5.5 are the practical defaults for day-to-day lab and analysis work.
+- Fable 5.1 carries additional biology safeguards. Anthropic doesn't recommend it for professional biology research; biology-flagged requests on Fable 5.1 are re-run on Opus 5, and dual-use requests may still be declined. Opus 5.5 and Sonnet 5.5 are the practical defaults for day-to-day lab and analysis work.
 - Dual-use boundaries: anything resembling enhancement, synthesis, acquisition or weaponisation of pathogens/toxins is declined regardless of framing or credentials. Reframing ("for a review", "hypothetically") doesn't change the answer and wastes turns.
 - What stays fully available: literature synthesis, statistics and plotting, protocol formatting and clarity edits, experimental design critique, sequence and primer sanity checks on sequences you supply, grant and manuscript writing, teaching materials.
 - For teams doing legitimate work that keeps hitting the line: Anthropic runs a Life Sciences Verification Program (beta) for Team, Enterprise and API customers, and Claude Science is the research workbench built for this use. Claude Mythos 5.1 (Fable without the extra safeguards) is only available to vetted organisations.
 - Honesty habit: Claude will not fabricate a citation, but it can mis-remember one. Verify every DOI before it goes in a manuscript.
 
-Sources: https://support.claude.com (search "Life Sciences Verification"), https://www.anthropic.com/glasswing, https://platform.claude.com/docs/en/models/fable-5-1/overview
+Sources: https://support.claude.com/en/articles/15363606 · https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards · https://claude.com/form/life-sciences-verification-program
 
 ## 5. Suggested connectors and skills
 
 | Need | Use |
 |---|---|
-| Papers and PDFs | Google Drive / Zotero-style connector if available; otherwise attach PDFs, Claude reads them in the sandbox |
+| Benchling | Pull notebook entries, sequences and registry records into analysis or protocol drafts |
+| PubMed | Search and read abstracts and metadata for paper triage and citation checks |
+| 10x Genomics | Query single-cell runs and outputs from 10x Genomics Cloud |
+| BioRender | Find scientific icons and templates for figures and graphical abstracts |
+| Synapse.org | Find and read shared research datasets and their metadata |
 | Data analysis | Built-in sandbox (pandas, scipy, matplotlib) — attach CSV/XLSX; use the `xlsx` skill for deliverables |
 | Lab notebook / protocols | Docs artifacts; a `protocol-formatting` skill with your lab's template |
 | Literature monitoring | Research + a weekly scheduled task writing to a Sheets literature matrix |

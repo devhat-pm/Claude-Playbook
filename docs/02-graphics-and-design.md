@@ -11,7 +11,7 @@ Claude doesn't generate raster images the way an image model does. It *draws* �
 | App screens / landing page / poster / flyer / menu / business card | "mock up the onboarding flow", "design a flyer for…" | **Design** artifact on a canvas you can edit, compare versions, export PDF/PNG |
 | Slides | "make a deck on…" | **Slides** artifact; export PPTX/PDF |
 | Interactive widget | "build a mortgage calculator I can play with" | HTML artifact or inline interactive |
-| Flowchart / architecture / brainstorm | "whiteboard the system" | **Whiteboard** artifact (movable boxes & stickies) |
+| Flowchart / architecture / brainstorm | "whiteboard the system" | **Whiteboard** artifact (movable boxes & stickies). Artifact type; availability varies by account, no public docs yet |
 | Short animation | "a 10-second animated logo reveal" | **Motion** artifact |
 | Brand kit | "set up a design system from our site" | **Design System** artifact, reused by every later deck/design |
 
