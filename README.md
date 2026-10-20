@@ -23,6 +23,21 @@ Last reviewed: 2026-10-20
 
 Templates: [CLAUDE.md](templates/CLAUDE.md) · [SKILL.md](templates/SKILL.md) · [Prompt](templates/prompt-template.md) · [Scheduled task](templates/scheduled-task-prompt.md)
 
+## By role
+
+What to do on Monday in your job: workflows with copy-paste prompts, setup and guardrails. Start with the [shared setup](roles/_shared-setup.md), then see the [role index](roles/README.md).
+
+| Role | Best first workflow |
+|---|---|
+| [Doctors & clinicians](roles/doctors-and-clinicians.md) | Patient handout at a set reading level (not a clinical decision tool) |
+| [Developers](roles/developers.md) | Onboard to an unfamiliar codebase in one session |
+| [Designers](roles/designers.md) | Mock up a screen in Claude Design on your design system |
+| [Researchers & academics](roles/researchers-and-academics.md) | Citation audit of a reference list |
+| [SEO & content](roles/seo-and-content.md) | Cluster a keyword CSV into topics |
+| [HR & recruiters](roles/hr-and-recruiters.md) | Structured interview kit with a scoring rubric |
+| [Marketers](roles/marketers.md) | Campaign brief from a messy kickoff |
+| [Finance specialists](roles/finance-specialists.md) | Variance analysis from an uploaded .xlsx |
+
 ## Advanced
 
 Recipes for daily users: problem, exact setup, output, failure modes. Start with [advanced/README.md](advanced/README.md) for the reading order.
