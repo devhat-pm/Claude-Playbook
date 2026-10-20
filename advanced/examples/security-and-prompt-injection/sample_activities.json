@@ -1,0 +1,49 @@
+{
+  "data": [
+    {
+      "id": "activity_03",
+      "created_at": "2026-10-19T09:12:00Z",
+      "organization_id": "org_example",
+      "organization_uuid": "00000000-0000-0000-0000-000000000000",
+      "actor": {
+        "type": "user_actor",
+        "email_address": "dev@example.com",
+        "user_id": "user_example",
+        "ip_address": "192.0.2.10",
+        "user_agent": "Mozilla/5.0"
+      },
+      "type": "integration_user_connected"
+    },
+    {
+      "id": "activity_02",
+      "created_at": "2026-10-19T08:40:00Z",
+      "organization_id": "org_example",
+      "organization_uuid": "00000000-0000-0000-0000-000000000000",
+      "actor": {
+        "type": "admin_api_key_actor",
+        "admin_api_key_id": "adminkey_example",
+        "ip_address": "198.51.100.7",
+        "user_agent": "curl/8"
+      },
+      "type": "platform_api_key_created"
+    },
+    {
+      "id": "activity_01",
+      "created_at": "2026-10-19T08:00:00Z",
+      "organization_id": "org_example",
+      "organization_uuid": "00000000-0000-0000-0000-000000000000",
+      "actor": {
+        "type": "user_actor",
+        "email_address": "dev@example.com",
+        "user_id": "user_example",
+        "ip_address": "192.0.2.10",
+        "user_agent": "Mozilla/5.0"
+      },
+      "type": "claude_chat_created",
+      "claude_chat_id": "claude_chat_example"
+    }
+  ],
+  "has_more": false,
+  "first_id": "activity_03",
+  "last_id": "activity_01"
+}
