@@ -9,6 +9,7 @@ Do the [shared setup](_shared-setup.md) once first: Projects, memory, writing st
 | [Doctors and clinicians](doctors-and-clinicians.md) | Patient handout at a set reading level, from your own source text. Claude is not a clinical decision tool. |
 | [Developers](developers.md) | Onboard to an unfamiliar codebase in one session, then go to [advanced/](../advanced/README.md) |
 | [Designers](designers.md) | Mock up a screen in Claude Design on your own design system |
+| [Biologists and life scientists](biologists-and-life-scientists.md) | CSV to stats to figure, with every assumption stated |
 | [Researchers and academics](researchers-and-academics.md) | Citation audit of a reference list: verify every reference before it goes out |
 | [SEO and content](seo-and-content.md) | Cluster a keyword export (CSV) into topics |
 | [HR and recruiters](hr-and-recruiters.md) | Structured interview kit with a scoring rubric |

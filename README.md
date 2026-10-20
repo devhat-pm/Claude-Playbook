@@ -32,6 +32,7 @@ What to do on Monday in your job: workflows with copy-paste prompts, setup and g
 | [Doctors & clinicians](roles/doctors-and-clinicians.md) | Patient handout at a set reading level (not a clinical decision tool) |
 | [Developers](roles/developers.md) | Onboard to an unfamiliar codebase in one session |
 | [Designers](roles/designers.md) | Mock up a screen in Claude Design on your design system |
+| [Biologists & life scientists](roles/biologists-and-life-scientists.md) | CSV to stats to figure, assumptions stated |
 | [Researchers & academics](roles/researchers-and-academics.md) | Citation audit of a reference list |
 | [SEO & content](roles/seo-and-content.md) | Cluster a keyword CSV into topics |
 | [HR & recruiters](roles/hr-and-recruiters.md) | Structured interview kit with a scoring rubric |
