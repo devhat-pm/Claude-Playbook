@@ -1,0 +1,16 @@
+{
+  "strictKnownMarketplaces": [
+    { "source": "github", "repo": "anthropics/claude-plugins-official" },
+    { "source": "github", "repo": "your-org/*" },
+    { "source": "skills-dir" }
+  ],
+  "extraKnownMarketplaces": {
+    "your-org-tools": {
+      "source": { "source": "github", "repo": "your-org/claude-plugins" },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "bulk-edit-tools@your-org-tools": true
+  }
+}

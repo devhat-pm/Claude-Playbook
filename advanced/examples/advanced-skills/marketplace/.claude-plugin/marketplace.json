@@ -1,0 +1,12 @@
+{
+  "name": "your-org-tools",
+  "description": "Internal Claude Code plugins for your org",
+  "owner": { "name": "Developer Productivity" },
+  "plugins": [
+    {
+      "name": "bulk-edit-tools",
+      "source": "./plugins/bulk-edit-tools",
+      "description": "Safe multi-file renames with a validated plan, dry-run diff and backups"
+    }
+  ]
+}

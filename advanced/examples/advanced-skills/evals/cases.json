@@ -1,0 +1,83 @@
+{
+  "skill": "safe-bulk-edit",
+  "plugin_dir": "../marketplace/plugins/bulk-edit-tools",
+  "defaults": {
+    "max_turns": 25,
+    "allowed_tools": ["Read", "Glob", "Grep", "Skill", "Write", "Edit", "Bash(python3 *)"]
+  },
+  "fixture": {
+    "src/api.py": "def getUser(uid):\n    return {\"id\": uid}\n",
+    "src/main.py": "from api import getUser\nprint(getUser(1))\n",
+    "src/jobs.py": "from api import getUser\n\ndef job():\n    return getUser(2)\n",
+    "notes.txt": "We recieve reports weekly.\n"
+  },
+  "cases": [
+    {
+      "id": "rename-explicit",
+      "prompt": "Rename getUser to fetchUser across the codebase.",
+      "should_trigger": true,
+      "checks": [
+        {"type": "regex", "target": "file:src/jobs.py", "pattern": "\\bgetUser\\b", "absent": true},
+        {"type": "regex", "target": "file:src/jobs.py", "pattern": "\\bfetchUser\\b"}
+      ]
+    },
+    {
+      "id": "rename-casual",
+      "prompt": "getUser is a terrible name, can you switch it to fetchUser in every file that uses it",
+      "should_trigger": true,
+      "checks": [
+        {"type": "regex", "target": "file:src/main.py", "pattern": "\\bgetUser\\b", "absent": true}
+      ]
+    },
+    {
+      "id": "migrate-import",
+      "prompt": "We're moving `from api import` to `from core.api import`. Update all the imports.",
+      "should_trigger": true,
+      "checks": [
+        {"type": "regex", "target": "file:src/jobs.py", "pattern": "from core\\.api import"}
+      ]
+    },
+    {
+      "id": "replace-string-everywhere",
+      "prompt": "Replace every occurrence of getUser( with fetchUser( in src/",
+      "should_trigger": true,
+      "checks": []
+    },
+    {
+      "id": "refactor-wording",
+      "prompt": "Refactor: the getUser helper should be called fetchUser now. Callers too.",
+      "should_trigger": true,
+      "checks": []
+    },
+    {
+      "id": "neg-single-typo",
+      "prompt": "Fix the typo 'recieve' in notes.txt.",
+      "should_trigger": false,
+      "checks": [
+        {"type": "regex", "target": "file:notes.txt", "pattern": "receive"}
+      ]
+    },
+    {
+      "id": "neg-explain",
+      "prompt": "What does getUser in src/api.py return?",
+      "should_trigger": false,
+      "checks": [
+        {"type": "regex", "target": "result", "pattern": "id"}
+      ]
+    },
+    {
+      "id": "neg-single-file-rename",
+      "prompt": "In src/api.py only, rename the parameter uid to user_id.",
+      "should_trigger": false,
+      "checks": []
+    },
+    {
+      "id": "neg-find-usages",
+      "prompt": "List every file that calls getUser. Don't change anything.",
+      "should_trigger": false,
+      "checks": [
+        {"type": "regex", "target": "result", "pattern": "jobs\\.py"}
+      ]
+    }
+  ]
+}

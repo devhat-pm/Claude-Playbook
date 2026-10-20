@@ -1,0 +1,9 @@
+{
+  "name": "bulk-edit-tools",
+  "displayName": "Bulk Edit Tools",
+  "version": "1.0.0",
+  "description": "Plan-validate-apply workflow for multi-file renames and replacements",
+  "author": { "name": "Your Team" },
+  "license": "MIT",
+  "keywords": ["refactor", "rename", "bulk-edit"]
+}
