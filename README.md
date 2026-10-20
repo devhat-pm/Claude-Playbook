@@ -3,6 +3,8 @@ Practical playbook for getting the most out of Claude: coding (chat, Claude Code
 
 Last reviewed: 2026-10-20
 
+[Changelog](CHANGELOG.md) · [What has been verified](advanced/README.md#verification-status)
+
 ## Fundamentals
 
 | Guide | What it covers |

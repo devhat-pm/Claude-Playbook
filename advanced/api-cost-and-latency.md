@@ -2,6 +2,8 @@
 
 Runnable scripts are in [`examples/api-cost-and-latency/`](examples/api-cost-and-latency/). All of them read `ANTHROPIC_API_KEY` from the environment, need `pip install anthropic`, and have a `--dry-run` or `--offline` mode that makes no calls.
 
+To rerun the measured benchmarks, recreate `examples/api-cost-and-latency/.env` containing `ANTHROPIC_API_KEY=...`. It's git-ignored and not shipped. `bench.py` and `cache_probe.py` load it when `python-dotenv` is installed.
+
 | File | Does |
 |---|---|
 | `pricing.py` | List-price table and a `usage -> USD` function: cache 5m/1h writes, model-specific cache-read multipliers, fast mode, batch, Haiku 5.5 long-prompt tier, US geo |
